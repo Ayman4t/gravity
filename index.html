@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>GravityDrop - انهيار الجاذبية الفوري | AymanStack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E9EEF5;--ink:#0E1726;--card:#FFFFFF;--line:#C6D1E1;--acc:#3B5BFF;--mut:#51607A}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+html{overflow-x:hidden}
+body{font-family:'Cairo',Tahoma,sans-serif;background-color:var(--bg);color:var(--ink);line-height:1.8}
+.wrap{max-width:960px;margin:0 auto;padding:20px 20px 170px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 0 28px}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+.logo{font-weight:900;font-size:1.5rem;padding:2px 10px;margin:0}
+.lnk{color:var(--ink);text-decoration:none;padding:4px 16px;border-radius:999px;border:1px solid var(--line);font-weight:700;display:inline-block}
+h1{font-size:clamp(1.9rem,5.5vw,3.2rem);line-height:1.35;font-weight:900;margin:0 0 12px;padding:6px 10px}
+.lead{color:var(--mut);max-width:62ch;margin:0 0 20px;font-size:1.05rem;padding:6px 10px}
+.art{height:200px;border-radius:18px;background:linear-gradient(135deg,var(--acc),#8A5BFF 55%,#FF8AC2);margin:24px 0}
+.row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:700;border:0;border-radius:12px;padding:10px 22px;background:var(--acc);color:#fff}
+.badge{width:72px;height:72px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font-weight:900;font-size:1.3rem}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;font-weight:700;text-align:center}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card h3{margin:0 0 6px;font-size:1.15rem}
+.card p{margin:0;color:var(--mut)}
+.quote{margin:28px 0;padding:16px 20px;border-inline-start:4px solid var(--acc);font-size:1.2rem;font-weight:700;background:var(--card);border-radius:10px}
+.sub{display:flex;gap:10px;margin:0 0 28px;flex-wrap:wrap}
+.in{flex:1;min-width:200px;font:inherit;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.tags{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 0}
+.chip{display:inline-block;padding:4px 16px;border-radius:999px;background:var(--ink);color:var(--bg);font-weight:700;font-size:.95rem}
+.art2{height:150px;border-radius:18px;background:linear-gradient(120deg,#FF8AC2,#FFB84D 50%,#3B5BFF);margin:28px 0}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:28px 0}
+.step{background:var(--acc);color:#fff;border-radius:14px;padding:16px;font-weight:700}
+.badges{display:flex;flex-wrap:wrap;gap:14px;margin:28px 0}
+.badges .badge{width:64px;height:64px;font-size:1.1rem}
+.b2{background:#FF2E88}.b3{background:#0E1726}.b4{background:#12A37A}
+.faq{margin:0 0 12px;padding:14px 18px;border:1px solid var(--line);border-radius:12px;background:var(--card);font-weight:700}
+.faqs{margin:28px 0 0}
+.foot{color:var(--mut);padding:6px 10px;margin:0;display:inline-block}
+.ph{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ph.live{position:absolute;left:0;top:0;margin:0;z-index:10;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;transform-origin:50% 50%;will-change:transform;overflow:hidden}
+.ph.live.hit{box-shadow:0 0 0 2px var(--acc),0 0 24px var(--acc)}
+.ui{position:fixed;z-index:50}
+.big{font:inherit;font-weight:900;font-size:1.1rem;padding:14px 28px;border-radius:999px;border:0;cursor:pointer;white-space:nowrap;left:50%;transform:translateX(-50%);bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+#reset{background:#000;color:#fff;border:2px solid #19F0FF;box-shadow:0 0 22px rgba(25,240,255,.55);}
+.toast{top:calc(14px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);background:#000;color:#19F0FF;border:1px solid #19F0FF;border-radius:12px;padding:8px 18px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .3s;max-width:92vw;text-align:center}
+.toast.on{opacity:1}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #FF2E88;outline-offset:2px}
+@media (max-width:640px){.stats{grid-template-columns:1fr}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+<script>if(!window.Matter){document.write('<script src="https://cdn.jsdelivr.net/npm/matter-js@0.19.0/build/matter.min.js"><\/script>')}</script>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h2 class="logo ph">AymanStack</h2>
+    <nav>
+      <a class="lnk ph" href="#">الرئيسية</a>
+      <a class="lnk ph" href="#">المقالات</a>
+      <a class="lnk ph" href="#">الأمان السيبراني</a>
+      <a class="lnk ph" href="#">تواصل</a>
+    </nav>
+  </header>
+  <main>
+    <h1 class="ph">كيف تعمل محركات الفيزياء داخل المتصفح؟</h1>
+    <p class="lead ph">مقال تقني هادئ عن الكتل والتصادمات والاحتكاك. اقرأه بتمعّن، ثم المس أي عنصر في الصفحة.</p>
+    <div class="art ph"></div>
+    <div class="row">
+      <button class="btn ph" type="button">اقرأ المقال كاملاً</button>
+      <div class="badge ph" data-shape="circle">AS</div>
+    </div>
+    <div class="stats">
+      <div class="stat ph">٦٠ إطاراً في الثانية</div>
+      <div class="stat ph">كتلة واحدة لكل عنصر</div>
+      <div class="stat ph">جاذبية بكل اتجاه</div>
+      <div class="stat ph">احتكاك ومرونة حقيقيان</div>
+      <div class="stat ph">اصطدام بين كل العناصر</div>
+      <div class="stat ph">سحب بالإصبع</div>
+    </div>
+    <div class="cards">
+      <article class="card ph"><h3>التصادم بين الأجسام الصلبة</h3><p>كل عنصر في الصفحة يصبح جسماً له حدود وكتلة، والمحرك يحسب نقاط التلامس في كل إطار.</p></article>
+      <article class="card ph"><h3>الاحتكاك والمرونة</h3><p>الاحتكاك يبطئ الانزلاق، والمرونة تحدد مقدار الارتداد بعد الاصطدام.</p></article>
+      <article class="card ph"><h3>حساسات الهاتف</h3><p>زاويتا الميلان beta وgamma تتحولان إلى متجه جاذبية يتغير مع حركة يدك.</p></article>
+      <article class="card ph"><h3>الكتلة والكثافة</h3><p>العنصر الكبير أثقل من الصغير، لذلك يدفع جاره عند الاصطدام ولا يتأثر كثيراً بالعكس.</p></article>
+      <article class="card ph"><h3>الأرضية والجدران</h3><p>أرضية الصفحة وحوافها جدران صلبة تمنع العناصر من الخروج، وتتوقف عندها كل حركة.</p></article>
+      <article class="card ph"><h3>السحب بالإصبع</h3><p>الإصبع يربط العنصر بنقطة لمس بقوة مرنة، فتستطيع سحبه وقذفه وهو يدور.</p></article>
+    </div>
+    <div class="tags">
+      <span class="chip ph">Matter.js</span>
+      <span class="chip ph">Canvas 2D</span>
+      <span class="chip ph">DeviceOrientation</span>
+      <span class="chip ph">JavaScript</span>
+      <span class="chip ph">محاكاة فيزيائية</span>
+      <span class="chip ph">AymanStack</span>
+    </div>
+    <div class="art2 ph"></div>
+    <div class="steps">
+      <div class="step ph">١. قراءة العناصر ومقاساتها</div>
+      <div class="step ph">٢. تحويلها إلى أجسام صلبة</div>
+      <div class="step ph">٣. ربط الجاذبية بحساس الهاتف</div>
+    </div>
+    <div class="badges">
+      <div class="badge ph" data-shape="circle">JS</div>
+      <div class="badge ph b2" data-shape="circle">2D</div>
+      <div class="badge ph b3" data-shape="circle">FPS</div>
+      <div class="badge ph b4" data-shape="circle">G</div>
+    </div>
+    <blockquote class="quote ph">الواجهة مجرد اتفاق بين العين واليد. غيّر الاتفاق وستتغير الصفحة كلها.</blockquote>
+    <div class="faqs">
+      <div class="faq ph">هل يعمل على الهاتف؟ نعم، ويستفيد من حساس الميلان.</div>
+      <div class="faq ph">هل تعود العناصر إلى مكانها؟ نعم، بزر إعادة الترتيب.</div>
+      <div class="faq ph">هل أحتاج مكتبات؟ مكتبة Matter.js فقط.</div>
+    </div>
+    <blockquote class="quote ph">كل شيء في الصفحة ثقيل بمقدار ما تظن. المس واحداً منها وشاهد.</blockquote>
+    <div class="sub">
+      <input class="in ph" type="email" placeholder="بريدك الإلكتروني" aria-label="البريد الإلكتروني">
+      <button class="btn ph" type="button">اشترك في النشرة</button>
+    </div>
+    <p class="foot ph">© AymanStack - جميع الحقوق محفوظة</p>
+  </main>
+</div>
+
+<button id="reset" class="ui big" type="button" hidden>إعادة الترتيب (Reset)</button>
+<div id="toast" class="ui toast" role="status"></div>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)};
+  var resetBtn=$('#reset'),toastEl=$('#toast'),toastT=0;
+  function toast(msg,ms){
+    toastEl.textContent=msg;toastEl.classList.add('on');
+    clearTimeout(toastT);toastT=setTimeout(function(){toastEl.classList.remove('on')},ms||2800);
+  }
+  if(!window.Matter){
+    document.addEventListener('click',function(e){
+      if(e.target.closest('.ph'))toast('تعذّر تحميل مكتبة الفيزياء. تحقق من الاتصال بالإنترنت.',4000);
+    });
+    return;
+  }
+  var M=Matter,Engine=M.Engine,Runner=M.Runner,Bodies=M.Bodies,Body=M.Body,Composite=M.Composite,Constraint=M.Constraint,Events=M.Events,Query=M.Query;
+
+  var G=1.3;
+
+  var engine=null,runner=null,items=[],byEl=new Map(),byId={},walls=[];
+  var DW=0,DH=0,busy=false,raf=0,drag=null,timers=[];
+  var tg={x:0,y:1},cg={x:0,y:1},manualUntil=0,sensorSeen=false,hinted=false,sensorOn=false;
+
+  function docSize(){
+    DW=document.documentElement.clientWidth;
+    DH=Math.max(document.documentElement.scrollHeight,window.innerHeight);
+  }
+  function anyFallen(){return items.some(function(i){return i.fallen})}
+
+  /* ---------- الحساسات ---------- */
+  function enableSensors(){
+    if(sensorOn)return;
+    try{
+      if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
+        DeviceOrientationEvent.requestPermission().then(function(r){
+          if(r==='granted'){sensorOn=true;window.addEventListener('deviceorientation',onOri)}
+          else toast('تم رفض إذن الحساس، فلن تتغير الجاذبية مع ميلان الهاتف.');
+        }).catch(function(){});
+      }else if('DeviceOrientationEvent' in window){
+        sensorOn=true;window.addEventListener('deviceorientation',onOri);
+      }
+    }catch(err){}
+  }
+  function onOri(e){
+    if(e.beta==null||e.gamma==null)return;
+    if(!sensorSeen){sensorSeen=true;toast('الحساس يعمل. أمسك الهاتف عمودياً ومِلْه أو اقلبه.',3200)}
+    if(performance.now()<manualUntil)return;
+    var b=e.beta*Math.PI/180,g=e.gamma*Math.PI/180;
+    var x=Math.sin(g),y=Math.sin(b)*Math.cos(g),t;
+    var a=(screen.orientation&&typeof screen.orientation.angle==='number')?screen.orientation.angle:(window.orientation||0);
+    if(a===90){t=x;x=y;y=-t}
+    else if(a===180||a===-180){x=-x;y=-y}
+    else if(a===270||a===-90){t=x;x=-y;y=t}
+    tg={x:x,y:y};
+  }
+
+  /* ---------- بناء العالم (مرة واحدة عند أول لمسة) ---------- */
+  function makeWalls(){
+    var t=400,o={isStatic:true,friction:0.4,restitution:0.2};
+    walls.forEach(function(w){Composite.remove(engine.world,w)});
+    walls=[
+      Bodies.rectangle(DW/2,DH+t/2,DW+t*2,t,o),
+      Bodies.rectangle(-t/2,DH/2,t,DH+4000,o),
+      Bodies.rectangle(DW+t/2,DH/2,t,DH+4000,o),
+      Bodies.rectangle(DW/2,-t/2,DW+t*2,t,o)
+    ];
+    Composite.add(engine.world,walls);
+  }
+
+  function init(){
+    if(engine)return;
+    docSize();
+    engine=Engine.create({positionIterations:8,velocityIterations:6});
+    engine.gravity.scale=0.001;engine.gravity.x=0;engine.gravity.y=G;
+    makeWalls();
+    var sx=window.pageXOffset,sy=window.pageYOffset,bodies=[];
+    document.querySelectorAll('.ph').forEach(function(el){
+      var r=el.getBoundingClientRect(),w=r.width,h=r.height;
+      if(!w||!h)return;
+      var cx=r.left+sx+w/2,cy=r.top+sy+h/2;
+      var opts={friction:0.35,frictionStatic:0.5,restitution:0.12,frictionAir:0.012,density:0.0012};
+      var body=el.dataset.shape==='circle'
+        ?Bodies.circle(cx,cy,Math.min(w,h)/2,opts)
+        :Bodies.rectangle(cx,cy,w,h,Object.assign({chamfer:{radius:Math.max(1,Math.min(10,h/3,w/3))}},opts));
+      Body.setStatic(body,true);
+      var it={el:el,ph:null,body:body,w:w,h:h,ox:cx,oy:cy,fallen:false,saved:null,t:0};
+      items.push(it);byEl.set(el,it);byId[body.id]=it;bodies.push(body);
+    });
+    Composite.add(engine.world,bodies);
+    Events.on(engine,'collisionStart',function(ev){
+      ev.pairs.forEach(function(p){
+        [p.bodyA,p.bodyB].forEach(function(b){
+          var it=byId[b.id];
+          if(it&&it.fallen&&b.speed>7){
+            it.el.classList.add('hit');clearTimeout(it.t);
+            it.t=setTimeout(function(){it.el.classList.remove('hit')},170);
+          }
+        });
+      });
+    });
+    runner=Runner.create();Runner.run(runner,engine);
+    raf=requestAnimationFrame(frame);
+  }
+
+  function place(it){
+    var p=it.body.position;
+    it.el.style.transform='translate3d('+(p.x-it.w/2)+'px,'+(p.y-it.h/2)+'px,0) rotate('+it.body.angle+'rad)';
+  }
+
+  /* ---------- إسقاط عنصر واحد ---------- */
+  function fall(it){
+    if(!it||it.fallen||busy)return;
+    var el=it.el,cs=getComputedStyle(el);
+    var ph=document.createElement('div');
+    ph.setAttribute('aria-hidden','true');
+    ph.style.cssText='display:'+(cs.display==='inline'?'inline-block':cs.display)+';width:'+it.w+'px;height:'+it.h+'px;margin:'+cs.margin+';flex:none;visibility:hidden';
+    it.saved=el.getAttribute('style');
+    el.before(ph);it.ph=ph;
+    el.style.width=it.w+'px';el.style.height=it.h+'px';
+    el.classList.add('live');
+    it.fallen=true;
+    place(it);
+    Body.setStatic(it.body,false);
+    Body.setVelocity(it.body,{x:0,y:0});
+    Body.setAngularVelocity(it.body,(Math.random()-0.5)*0.03);
+    resetBtn.hidden=false;
+    if(!hinted){hinted=true;toast('اسحب أي عنصر ساقط بإصبعك، وحرّك هاتفك لتغيير الجاذبية.',3400)}
+  }
+
+  function frame(){
+    raf=requestAnimationFrame(frame);
+    if(busy)return;
+    cg.x+=(tg.x-cg.x)*0.12;cg.y+=(tg.y-cg.y)*0.12;
+    engine.gravity.x=cg.x*G;engine.gravity.y=cg.y*G;
+    for(var i=0;i<items.length;i++){
+      var it=items[i];if(!it.fallen)continue;
+      var b=it.body,p=b.position;
+      if(p.x<-it.w-60||p.x>DW+it.w+60||p.y>DH+it.h+60||p.y<-it.h-60){
+        Body.setPosition(b,{x:DW/2,y:Math.max(it.h,window.pageYOffset+it.h)});Body.setVelocity(b,{x:0,y:0});
+      }
+      place(it);
+    }
+  }
+
+  /* ---------- السحب بالإصبع ---------- */
+  function localPoint(body,x,y){
+    var dx=x-body.position.x,dy=y-body.position.y,c=Math.cos(-body.angle),s=Math.sin(-body.angle);
+    return{x:dx*c-dy*s,y:dx*s+dy*c};
+  }
+  document.addEventListener('pointerdown',function(e){
+    if(!engine||busy||e.target.closest('.ui'))return;
+    var pt={x:e.pageX,y:e.pageY};
+    var live=items.filter(function(i){return i.fallen}).map(function(i){return i.body});
+    var hit=Query.point(live,pt)[0];
+    if(!hit)return;
+    e.preventDefault();
+    var c=Constraint.create({pointA:pt,bodyB:hit,pointB:localPoint(hit,pt.x,pt.y),stiffness:0.2,damping:0.1,length:0});
+    Composite.add(engine.world,c);drag=c;
+  },{passive:false});
+  window.addEventListener('pointermove',function(e){if(drag)drag.pointA={x:e.pageX,y:e.pageY}});
+  function endDrag(){if(drag&&engine)Composite.remove(engine.world,drag);drag=null}
+  window.addEventListener('pointerup',endDrag);
+  window.addEventListener('pointercancel',endDrag);
+
+  /* ---------- اللمس: العنصر الذي تضغط عليه يسقط وحده ---------- */
+  document.addEventListener('click',function(e){
+    if(e.target.closest('a.lnk'))e.preventDefault();
+    var el=e.target.closest('.ph');
+    if(!el)return;
+    enableSensors();
+    init();
+    var it=byEl.get(el);
+    if(it&&!it.fallen){e.preventDefault();fall(it)}
+  });
+
+  /* ---------- إعادة الترتيب ---------- */
+  function reset(){
+    if(!engine||busy||!anyFallen())return;
+    busy=true;endDrag();
+    timers.forEach(clearTimeout);timers=[];
+    resetBtn.hidden=true;
+    var TAU=Math.PI*2,list=items.filter(function(i){return i.fallen});
+    var sx=window.pageXOffset,sy=window.pageYOffset;
+    list.forEach(function(it){
+      Body.setStatic(it.body,true);
+      var r=it.ph.getBoundingClientRect();
+      it.tx=r.left+sx+r.width/2;it.ty=r.top+sy+r.height/2;
+      it.px=it.body.position.x;it.py=it.body.position.y;
+      it.pa=((it.body.angle+Math.PI)%TAU+TAU)%TAU-Math.PI;
+      it.el.classList.remove('hit');
+    });
+    var t0=performance.now(),D=1100;
+    function step(now){
+      var k=Math.min(1,(now-t0)/D),e=k<0.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+      list.forEach(function(it){
+        var x=it.px+(it.tx-it.px)*e,y=it.py+(it.ty-it.py)*e,a=it.pa*(1-e);
+        it.el.style.transform='translate3d('+(x-it.w/2)+'px,'+(y-it.h/2)+'px,0) rotate('+a+'rad)';
+      });
+      if(k<1){requestAnimationFrame(step);return}
+      list.forEach(function(it){
+        it.el.classList.remove('live');
+        if(it.saved===null)it.el.removeAttribute('style');else it.el.setAttribute('style',it.saved);
+        it.ph.remove();it.ph=null;
+        Body.setAngle(it.body,0);
+        Body.setPosition(it.body,{x:it.ox,y:it.oy});
+        Body.setVelocity(it.body,{x:0,y:0});
+        it.fallen=false;
+      });
+      busy=false;
+    }
+    requestAnimationFrame(step);
+  }
+  resetBtn.addEventListener('click',reset);
+
+  window.addEventListener('keydown',function(e){
+    if(!engine||!anyFallen())return;
+    var m={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]}[e.key];
+    if(m){e.preventDefault();tg={x:m[0],y:m[1]};manualUntil=performance.now()+5000}
+  });
+
+  window.addEventListener('resize',function(){
+    if(!engine||busy)return;
+    docSize();makeWalls();
+    items.forEach(function(it){
+      if(it.fallen)return;
+      var r=it.el.getBoundingClientRect();
+      it.ox=r.left+window.pageXOffset+r.width/2;it.oy=r.top+window.pageYOffset+r.height/2;
+      Body.setPosition(it.body,{x:it.ox,y:it.oy});
+    });
+  });
+})();
+</script>
+</body>
+</html>
